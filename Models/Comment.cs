@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -29,6 +30,8 @@ namespace BlogProject.Models
 
         // navigation properties
         public virtual Post Post { get; set; }
-        public virtual IdenttyUser 
+        public virtual IdentityUser Author { get; set; }
+        public virtual IdentityUser Moderator { get; set; }
+
     }
 }
