@@ -13,5 +13,12 @@ namespace BlogProject.Data
             : base(options)
         {
         }
+
+
+        // used to set table names and reference in dbcontext
+        public DbSet<Blog> Blogs { get; set; }
+        public DbSet<Post> Posts { get; set; }
+        public DbSet<Comment> Comments { get; set; }
+        public DbSet<Tag> Tags { get; set; }
     }
 }
