@@ -120,6 +120,7 @@ namespace BlogProject.Controllers
                 {
                     // get blog by id for check on image
                     var newBlog = await _context.Blogs.FindAsync(blog.Id);
+
                     newBlog.Updated = DateTime.Now;
 
                     if (newBlog.Name != blog.Name)
@@ -136,8 +137,6 @@ namespace BlogProject.Controllers
                     {
                         newBlog.ImageData = await _imageService.EncodeImageAsync(newImage);
                     }
-                    
-                    
 
                     await _context.SaveChangesAsync();
                 }
@@ -154,7 +153,9 @@ namespace BlogProject.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["BlogUserId"] = new SelectList(_context.Users, "Id", "Id", blog.BlogUserId);
+
             return View(blog);
         }
 

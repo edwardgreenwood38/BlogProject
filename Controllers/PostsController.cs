@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using BlogProject.Data;
 using BlogProject.Models;
 using BlogProject.Services;
+using Microsoft.AspNetCore.Http;
 
 namespace BlogProject.Controllers
 {
@@ -15,11 +16,13 @@ namespace BlogProject.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly ISlugService _slugService;
+        private readonly IImageService _imageService;
 
-        public PostsController(ApplicationDbContext context, ISlugService slugService)
+        public PostsController(ApplicationDbContext context, ISlugService slugService, IImageService imageService)
         {
             _context = context;
             _slugService = slugService;
+            _imageService = imageService;
         }
 
         // GET: Posts
@@ -53,7 +56,7 @@ namespace BlogProject.Controllers
         public IActionResult Create()
         {
             ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Name");
-            //ViewData["BlogUserId"] = new SelectList(_context.Users, "Id", "Id");
+            ViewData["BlogUserId"] = new SelectList(_context.Users, "Id", "Id");
 
             return View();
         }
@@ -69,12 +72,18 @@ namespace BlogProject.Controllers
             {
                 post.Created = DateTime.Now;
 
+                // use the _imageservice to store the incoming user specified image
+                post.ImageData = await _imageService.EncodeImageAsync(post.Image);
+                post.ContentType = _imageService.ContentType(post.Image);
+
+
                 // create the slug and determine if is unique
                 var slug = _slugService.UrlFriendly(post.Title);
                 if (!_slugService.IsUnique(slug))
                 {
                     ModelState.AddModelError("Title", "The title you provided cannot be used as it results in a duplicate slug");
                     ViewData["TagValues"] = string.Join(",", tagValues);
+
                     return View(post);
                 }
 
@@ -114,7 +123,7 @@ namespace BlogProject.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,BlogId,Title,Abstract,Content,ReadyStatus,Image")] Post post)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,BlogId,Title,Abstract,Content,ReadyStatus")] Post post, IFormFile newImage)
         {
             if (id != post.Id)
             {
@@ -125,9 +134,19 @@ namespace BlogProject.Controllers
             {
                 try
                 {
-                    post.Updated = DateTime.Now;
+                    var newPost = await _context.Posts.FindAsync(post.Id);
+                    newPost.Updated = DateTime.Now;
+                    newPost.Title = post.Title;
+                    newPost.Abstract = post.Abstract;
+                    newPost.Content = post.Content;
+                    newPost.ReadyStatus = post.ReadyStatus;
+
+                    if (newImage is not null)
+                    {
+                        newPost.ImageData = await _imageService.EncodeImageAsync(newImage);
+                        newPost.ContentType = _imageService.ContentType(newImage);
+                    }
                     
-                    _context.Update(post);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -143,7 +162,9 @@ namespace BlogProject.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Description", post.BlogId);
+            ViewData["BlogUserId"] = new SelectList(_context.Users, "Id", "Id", post.BlogUserId);
             
             return View(post);
         }
