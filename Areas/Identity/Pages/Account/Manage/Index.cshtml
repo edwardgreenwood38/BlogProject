@@ -9,7 +9,7 @@
 <partial name="_StatusMessage" model="Model.StatusMessage" />
 <div class="row">
     <div class="col-md-6">
-        <form id="profile-form" method="post">
+        <form id="profile-form" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Username"></label>
@@ -24,12 +24,15 @@
                 <label>Select Image</label>
                 <div class="custom-file">
                     <input asp-for="Input.Image" type="file" class="form-control-file" />
-                    <input asp-for="Input.Image" class="control-lable custom-file-label" />
+                    <label asp-for="Input.Image" class="control-label custom-file-label" />
                 </div>
             </div>
 
             <button id="update-profile-button" type="submit" class="btn btn-primary">Save</button>
         </form>
+    </div>
+    <div class="col-md-6">
+        <image src="@Model.CurrentImage" class="img-fluid rounded-circle" width="90%" />
     </div>
 </div>
 
