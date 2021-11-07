@@ -14,6 +14,7 @@ namespace BlogProject.Models
         [StringLength(50, ErrorMessage = "The {0} must be at least {2} and no more than {1} characters long.", MinimumLength = 3)]
         [Display(Name = "First Name")]
         public string FirstName { get; set; }
+
         [Required]
         [StringLength(50, ErrorMessage = "The {0} must be at least {2} and no more than {1} characters long.", MinimumLength = 3)]
         [Display(Name = "Last Name")]
@@ -29,6 +30,7 @@ namespace BlogProject.Models
 
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} and no more than {1} characters long.", MinimumLength = 3)]
         public string FaceBookUrl { get; set; }
+
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} and no more than {1} characters long.", MinimumLength = 3)]
         public string TwitterUrl { get; set; }
 

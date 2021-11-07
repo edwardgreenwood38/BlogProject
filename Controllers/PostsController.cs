@@ -9,6 +9,7 @@ using BlogProject.Data;
 using BlogProject.Models;
 using BlogProject.Services;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 
 namespace BlogProject.Controllers
 {
@@ -17,12 +18,14 @@ namespace BlogProject.Controllers
         private readonly ApplicationDbContext _context;
         private readonly ISlugService _slugService;
         private readonly IImageService _imageService;
+        private readonly UserManager<BlogUser> _userManager;
 
-        public PostsController(ApplicationDbContext context, ISlugService slugService, IImageService imageService)
+        public PostsController(ApplicationDbContext context, ISlugService slugService, IImageService imageService, UserManager<BlogUser> userManager)
         {
             _context = context;
             _slugService = slugService;
             _imageService = imageService;
+            _userManager = userManager;
         }
 
         // GET: Posts
@@ -66,11 +69,14 @@ namespace BlogProject.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BlogId,Title,Abstract,Content,ReadyStatus,Image")] Post post, List<string> tagValues)
+        public async Task<IActionResult> Create([Bind("BlogId,Title,Abstract,Content,ReadyStatus,Image")] Post post, List<string> TagValues)
         {
             if (ModelState.IsValid)
             {
                 post.Created = DateTime.Now;
+
+                var authorId = _userManager.GetUserId(User);
+                post.BlogUserId = authorId;
 
                 // use the _imageservice to store the incoming user specified image
                 post.ImageData = await _imageService.EncodeImageAsync(post.Image);
@@ -82,7 +88,7 @@ namespace BlogProject.Controllers
                 if (!_slugService.IsUnique(slug))
                 {
                     ModelState.AddModelError("Title", "The title you provided cannot be used as it results in a duplicate slug");
-                    ViewData["TagValues"] = string.Join(",", tagValues);
+                    ViewData["TagValues"] = string.Join(",", TagValues);
 
                     return View(post);
                 }
@@ -90,6 +96,20 @@ namespace BlogProject.Controllers
                 post.Slug = slug;
 
                 _context.Add(post);
+                await _context.SaveChangesAsync();
+
+
+                // loop over incoming list of tags
+                foreach (var tag in TagValues)
+                {
+                    _context.Add(new Tag()
+                    {
+                        PostId = post.Id,
+                        BlogUserId = authorId,
+                        Text = tag
+                    });
+                }
+
                 await _context.SaveChangesAsync();
 
                 return RedirectToAction(nameof(Index));

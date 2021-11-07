@@ -20,15 +20,18 @@ namespace BlogProject.Models
         [Required]
         [StringLength(75, ErrorMessage = "The {0} must be at least {2} and no more than {1} characters long.", MinimumLength = 2)]
         public string Title { get; set; }
+
         [Required]
         [StringLength(200, ErrorMessage = "The {0} must be at least {2} and no more than {1} characters long.", MinimumLength = 2)]
         public string Abstract { get; set; }
+
         [Required]
         public string Content { get; set; }
 
         [DataType(DataType.Date)]
         [Display(Name = "Created Date")]
         public DateTime Created { get; set; }
+
         [DataType(DataType.Date)]
         [Display(Name = "Updated Date")]
         public DateTime? Updated { get; set; }
