@@ -33,7 +33,7 @@
 @foreach (var post in Model) {
         <tr>
             <td>
-                <img src="@imageService.DecodeImage(post.ImageData, post.ContentType)"/>
+                <img src="@imageService.DecodeImage(post.ImageData, post.ContentType)" width="200px"/>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => post.Title)
