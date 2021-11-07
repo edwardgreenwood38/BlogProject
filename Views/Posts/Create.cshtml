@@ -48,10 +48,10 @@
                         </div>
                         <div class="row">
                             <div class="col">
-                                <button name="Add" type="button" class="btn btn-dark btn-sm w-100">Add</button>
+                                <button name="Add" onclick="AddTag()" type="button" class="btn btn-dark btn-sm w-100">Add</button>
                             </div>
                             <div class="col">
-                                <button name="Delete" type="button" class="btn btn-dark btn-sm w-100">Delete</button>
+                                <button name="Delete" onclick="DeleteTag()" type="button" class="btn btn-dark btn-sm w-100">Delete</button>
                             </div>
                         </div>
                     </div>
@@ -85,10 +85,13 @@
 </div>
 
 @*@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}*@
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }*@
 
 @section Scripts{
+
+
+    <script src="~/js/site.js"></script>
 
     <script>
         $('#Content').summernote({
