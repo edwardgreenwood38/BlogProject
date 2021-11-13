@@ -100,10 +100,19 @@ namespace BlogProject.Controllers
                 }
 
                 // determine if is unique
-                if (!_slugService.IsUnique(slug))
+                else if (!_slugService.IsUnique(slug))
                 {
                     validationError = true;
                     ModelState.AddModelError("Title", "The title you provided cannot be used as it results in a duplicate slug");
+                }
+
+                // to show that you can setup anything for error types
+                // this checks for the word test and prevents youfrom using the word in the title
+                else if (slug.Contains("test"))
+                {
+                    validationError = true;
+                    ModelState.AddModelError("", "Un-oh are you testing agian??");
+                    ModelState.AddModelError("Title", "The title cannot contain the word test");
                 }
 
 
