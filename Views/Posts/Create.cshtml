@@ -90,10 +90,9 @@
 
 @section Scripts{
 
-
-    <script src="~/js/site.js"></script>
-
     <script>
+        let tagValues = '@ViewData["TagValues"]';
+
         $('#Content').summernote({
             placeholder: 'Message',
             tabsize: 2,
@@ -109,6 +108,8 @@
             ]
         });
     </script>
+
+    <script src="~/js/site.js"></script>
 
 }
 
