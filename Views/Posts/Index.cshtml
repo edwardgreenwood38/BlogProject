@@ -33,7 +33,7 @@
 @foreach (var post in Model) {
         <tr>
             <td>
-                <img src="@imageService.DecodeImage(post.ImageData, post.ContentType)" width="200px"/>
+                <img src="@imageService.DecodeImage(post.ImageData, post.ContentType)" width="200"/>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => post.Title)
@@ -43,9 +43,9 @@
             </td>
             
             <td>
-                <a asp-action="Edit" asp-route-id="@post.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@post.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@post.Id">Delete</a>
+                <a asp-action="Edit" asp-route-slug="@post.Slug">Edit</a> |
+                <a asp-action="Details" asp-route-slug="@post.Slug">Details</a> |
+                <a asp-action="Delete" asp-route-slug="@post.Slug">Delete</a>
             </td>
         </tr>
 }
