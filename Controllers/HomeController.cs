@@ -51,18 +51,6 @@ namespace BlogProject.Controllers
             return View(await blogs);
         }
 
-        public async Task<IActionResult> BlogPostIndex(int? id)
-        {
-            if (id is null)
-            {
-                return NotFound();
-            }
-
-            var posts = _context.Posts.Where(p => p.BlogId == id).ToList();
-
-            return View("Index", posts);
-        }
-
         public IActionResult About()
         {
             return View();
