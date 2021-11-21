@@ -70,9 +70,9 @@
 
 <button id="commentSection" class="btn btn-sm btn-dark btn-block">@Model.Comments.Count COMMENT(S)</button>
 
-@foreach(Comment comment in Model.Comments)
+@foreach (var comment in Model.Comments)
 {
-    <div class="media media-border p-0 mb-2 bg-light">
+    <div class="media border-danger p-3 m-2 bg-light">
         <img class="mr-3 mt-3 rounded-circle" style="width:60px;" src="@imageService.DecodeImage(comment.BlogUser.ImageData, comment.BlogUser.ContentType)" />
         <div class="media-body">
             <h4>@comment.BlogUser.FullName</h4>
@@ -82,7 +82,7 @@
             @if (comment.Moderated is null && comment.Deleted is null && comment.BlogUserId == userManager.GetUserId(User))
             {
                 <hr />
-                <button data-bs-toggle="modal" data-bs-target="#editModal" class="btn-sm btn-dark note-float-right font-weight-bold">EDIT</button>
+                <button data-bs-toggle="modal" data-bs-target="#editModal" class="btn-sm btn-dark float-right font-weight-bold">EDIT</button>
             }
         </div>
     </div>
@@ -111,7 +111,7 @@
 
                 <!--## modal footer ##-->
                 <div class="modal-footer">
-                    <button type="button" class="btn-sm btn-dark font-weight-bold" data-dismiss="modal">CLOSE</button>
+                    <button type="button" class="btn-sm btn-dark font-weight-bold" data-bs-dismiss="modal">CLOSE</button>
                 </div>
             </div>
         </div>
