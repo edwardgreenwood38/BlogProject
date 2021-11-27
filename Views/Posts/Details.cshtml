@@ -72,10 +72,10 @@
 
 @foreach (var comment in Model.Comments)
 {
-    var name = $"comment{comment.Id}";
-    var editName = $"editComment{comment.Id}";
-    var btnName = $"btn{comment.Id}";
-    <div id="@name" class="border-danger p-3 m-2 bg-light" style="display: block;">
+    //var name = $"comment{comment.Id}";
+    //var editName = $"editComment{comment.Id}";
+    //var btnName = $"btn{comment.Id}";
+    <div class="border-danger p-3 m-2 bg-light" style="display: block;">
         <img class="mr-3 mt-3 rounded-circle" style="width:60px;" src="@imageService.DecodeImage(comment.BlogUser.ImageData, comment.BlogUser.ContentType)" />
         <div class="media-body">
             <h4>@comment.BlogUser.FullName</h4>
@@ -85,44 +85,39 @@
             @if (comment.Moderated is null && comment.Deleted is null && comment.BlogUserId == userManager.GetUserId(User))
             {
                 <hr />
-                <button id="@btnName" class="btn btn-sm btn-dark float-end font-weight-bold" onclick="toggleComments(@comment.Id)">EDIT</button>
+                <button class="btn btn-sm btn-dark float-end font-weight-bold" data-bs-toggle="modal" data-bs-target="#editModal_@comment.Id">EDIT</button>
             }
         </div>
     </div>
 
+    @* Modals*@
+    <div id="editModal_@comment.Id" class="modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Editing Comment...</h4>
+                </div>
+                <!--## modal body ##-->
+                <div class="modal-body">
+                    <form asp-action="Edit" asp-controller="Comments">
+                        @Html.Hidden("Id", comment.Id)
 
-    <div id="@editName" class="border-danger p-3 m-2 bg-secondary" style="display: none;">
-        <div class="media-body">
-            <h4>Editing Comment...</h4>
-            <form asp-action="Edit" asp-controller="Comments">
-                @Html.Hidden("Id", comment.Id)
+                        <div class="form-grooup">
+                            <textarea name="Body" class="form-control" required>@comment.Body</textarea>
+                        </div>
 
-                <div class="form-grooup">
-                    <textarea name="Body" class="form-control" required>@comment.Body</textarea>
+                        <button class="btn-sm btn-dark border-success font-weight-bold" type="submit" aria-label="Submit">SUBMIT</button>
+                    </form>
                 </div>
 
-                <button class="btn-sm btn-dark border-success font-weight-bold" type="submit" aria-label="Submit">SUBMIT</button>
-            </form>
+                <!--## modal footer ##-->
+                <div class="modal-footer">
+                    <button type="button" class="btn-sm btn-dark font-weight-bold" data-bs-dismiss="modal">Close</button>
+                </div>
+
+            </div>
         </div>
     </div>
-}
-
-
-@section Scripts
-{
-    <script>
-        function toggleComments(id) {
-            var comment = `comment${id}`
-            var editComment = `editComment${id}`;
-
-            var divComment = document.getElementById(comment);
-            divComment.style.display = "none";
-
-
-            var divEditComment = document.getElementById(editComment);
-            divEditComment.style.display = "block";
-        }
-    </script>
 }
 
 
