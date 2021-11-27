@@ -110,3 +110,5 @@ const swalWithDarkButton = Swal.mixin({
     timer: 3000,
     buttonsStyling: false
 });
+
+
