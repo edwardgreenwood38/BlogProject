@@ -255,6 +255,7 @@ namespace BlogProject.Controllers
                     newPost.Abstract = post.Abstract;
                     newPost.Content = post.Content;
                     newPost.ReadyStatus = post.ReadyStatus;
+                    newPost.BlogId = post.BlogId;
 
                     // slug check
                     var newSlug = _slugService.UrlFriendly(post.Title);
