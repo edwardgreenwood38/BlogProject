@@ -99,6 +99,10 @@ namespace BlogProject.Controllers
                         .Distinct().ToList()
             };
 
+            ViewData["HeaderImage"] = _imageService.DecodeImage(post.ImageData, post.ContentType);
+            ViewData["MainText"] = post.Title;
+            ViewData["SubText"] = post.Abstract;
+
             return View(dataVM);
         }
         //public async Task<IActionResult> Details(string slug)

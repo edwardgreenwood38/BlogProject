@@ -52,13 +52,13 @@
     </nav>
 
     <!-- Page Header-->
-    <header class="masthead" style="background-image: url('/img/home-bg.jpg');">
+    <header class="masthead" style="background-image: url(@ViewData["HeaderImage"]);">
         <div class="container position-relative px-4 px-lg-5">
             <div class="row gx-4 gx-lg-5 justify-content-center">
                 <div class="col-md-10 col-lg-8 col-xl-7">
                     <div class="site-heading">
-                        <h1>Edward's Blog</h1>
-                        <span class="subheading">A Blog About Software Development and IT</span>
+                        <h2>@ViewData["MainText"]</h2>
+                        <span class="subheading">@ViewData["SubText"]</span>
 
                         <form asp-action="SearchIndex" asp-controller="Posts">
                             <div class="input-group mt-5">

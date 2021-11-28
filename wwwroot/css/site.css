@@ -46,7 +46,15 @@ select, input, textarea, option, label, .tooltip-inner {
 header.masthead .page-heading,
 header.masthead .post-heading,
 header.masthead .site-heading {
-    padding: 100px 0 100px 0;
+    padding: 5px 0 10px 0;
+}
+
+header.masthead {
+    max-height: 450px;
+}
+
+.subheading {
+    font-size: 14px !important;
 }
 
 /*  google map  */
