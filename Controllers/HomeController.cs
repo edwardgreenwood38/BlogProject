@@ -19,12 +19,14 @@ namespace BlogProject.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IBlogEmailSender _emailSender;
         private readonly ApplicationDbContext _context;
+        private readonly IImageService _imageService;
 
-        public HomeController(ILogger<HomeController> logger, IBlogEmailSender emailSender, ApplicationDbContext context)
+        public HomeController(ILogger<HomeController> logger, IBlogEmailSender emailSender, ApplicationDbContext context, IImageService imageService)
         {
             _logger = logger;
             _emailSender = emailSender;
             _context = context;
+            _imageService = imageService;
         }
 
         public async Task<IActionResult> Index(int? page)
@@ -47,6 +49,11 @@ namespace BlogProject.Controllers
                     .Include(b => b.BlogUser)
                     .OrderByDescending(b => b.Created)
                     .ToPagedListAsync(pageNumber, pageSize);
+
+            var image = Url.Content("/img/home-bg.png");
+            ViewData["HeaderImage"] = image; //_imageService.DecodeImage(blogs.ImageData, blogs.ContentType);
+            ViewData["MainText"] = "Blogs Home";
+            ViewData["SubText"] = "List of Blogs";
 
             return View(await blogs);
         }

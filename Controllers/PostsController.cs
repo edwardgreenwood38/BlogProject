@@ -71,6 +71,10 @@ namespace BlogProject.Controllers
                 .OrderByDescending(p => p.Created)
                 .ToPagedListAsync(pageNumber, pageSize);
 
+            ViewData["HeaderImage"] = "";  //_imageService.DecodeImage(posts., posts.ContentType);
+            ViewData["MainText"] = "Post";
+            ViewData["SubText"] = "Post comments";
+
             return View(posts);
         }
 
@@ -105,28 +109,7 @@ namespace BlogProject.Controllers
 
             return View(dataVM);
         }
-        //public async Task<IActionResult> Details(string slug)
-        //{
-        //    if (slug == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var post = await _context.Posts
-        //        .Include(p => p.Blog)
-        //        .Include(p => p.BlogUser) // author
-        //        .Include(p => p.Tags)
-        //        .Include(p => p.Comments)
-        //        .ThenInclude(c => c.BlogUser)
-        //        .FirstOrDefaultAsync(m => m.Slug == slug);
-
-        //    if (post == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return View(post);
-        //}
+        
 
         // GET: Posts/Create
         public IActionResult Create()
