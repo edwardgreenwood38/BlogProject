@@ -311,11 +311,15 @@ namespace BlogProject.Controllers
                     }
                 }
 
-                return RedirectToAction("BlogPostIndex");
+                //return RedirectToAction("BlogPostIndex", "Posts", new { slug = post.Slug }, "commentSection");
+                return RedirectToAction("BlogPostIndex", "Posts", post.BlogId);
+                //return RedirectToAction(nameof(Index));
             }
 
             ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Description", post.BlogId);
             ViewData["BlogUserId"] = new SelectList(_context.Users, "Id", "Id", post.BlogUserId);
+
+            //return RedirectToAction("BlogPostIndex", "Posts", new { slug = post.Slug }, "commentSection");
             
             return View(post);
         }
